@@ -1,5 +1,7 @@
 # BRIEFING Eval Suite
 
+[![eval-ci](https://github.com/SCHLUESSELKIND/briefing-eval/actions/workflows/ci.yml/badge.svg)](https://github.com/SCHLUESSELKIND/briefing-eval/actions/workflows/ci.yml)
+
 Eine kleine, dependency-freie **Qualitäts- und Regressions-Suite** für die
 BRIEFING-Content-Pipeline (das Intelligence-Audioformat von zehnx.me). Sie prüft
 jedes generierte Episoden-Script gegen die Standards, die im Generator selbst
@@ -28,6 +30,19 @@ damit der Report ohne weitere Daten sofort läuft:
 
 Der gebündelte Lauf fällt also erwartungsgemäß durchs Gate — genau so demonstriert
 er, dass das Gate funktioniert.
+
+## Tests & CI
+
+Das Werkzeug testet sich selbst: `test_eval.py` (stdlib `unittest`, keine Deps)
+prüft gegen die Fixtures, dass die saubere Folge besteht und die fehlerhafte die
+richtigen Findings auslöst, plus einen Regressionstest für die Domain-Erkennung.
+
+```bash
+python3 -m unittest -v test_eval
+```
+
+Ein GitHub-Actions-Workflow (`.github/workflows/ci.yml`) fährt diese Self-Tests
+bei jedem Push auf Python 3.10 und 3.12. Status siehe Badge oben.
 
 ## Was geprüft wird
 

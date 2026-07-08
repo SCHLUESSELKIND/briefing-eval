@@ -1,0 +1,29 @@
+name: eval-ci
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Self-tests (stdlib unittest, no dependencies)
+        run: python -m unittest -v test_eval
+
+      - name: Eval report on fixtures (informational)
+        # Die gebündelten Fixtures enthalten bewusst eine fehlerhafte Folge,
+        # der Gate-Exit-Code ist hier also erwartbar != 0 und darf den Build
+        # nicht röten. Der eigentliche Gate-Test steckt in den Self-Tests oben.
+        run: python eval_briefing.py || true
